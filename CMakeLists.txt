@@ -54,3 +54,23 @@ add_executable(watcher_cross_stop
 
 target_compile_definitions(watcher_cross_stop PRIVATE _GNU_SOURCE)
 target_link_libraries(watcher_cross_stop PRIVATE libuv::uv)
+
+
+# ---------------------------------------------------------------------------
+# Testing & benchmarking (GoogleTest + Google Benchmark)
+# ---------------------------------------------------------------------------
+option(ENABLE_TESTS "Build unit tests with GoogleTest" ON)
+option(ENABLE_BENCHMARKS "Build performance benchmarks with Google Benchmark" ON)
+
+# Remote dependencies (FetchContent) live in their own module.
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include(Dependencies)
+
+if(ENABLE_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
+
+if(ENABLE_BENCHMARKS)
+    add_subdirectory(benchmarks)
+endif()
